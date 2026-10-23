@@ -1,45 +1,44 @@
-from pathlib import Path
 
 import pandas as pd
-import streamlit as st
+from pathlib import Path
+from functools import lru_cache
 
-
-DATASET_PATH = (
-    Path(__file__).parent
-    / "data"
-    / "Tokyo_Restaurant_Reviews_Tabelog.csv"
-)
-
-
-@st.cache_data
+@lru_cache(maxsize=1)
 def get_restaurants():
-    if not DATASET_PATH.exists():
-        raise FileNotFoundError(
-            f"Dataset not found at: {DATASET_PATH}"
-        )
+    path = Path(__file__).with_name("restaurants.csv")
+    df = pd.read_csv(path)
 
-    dataframe = pd.read_csv(
-        DATASET_PATH,
-        encoding="utf-8-sig",
-    )
+    # Keep Tokyo restaurants
+    df = df[df["prefecture"] == "東京"].copy()
 
-    dataframe = dataframe.fillna("")
+    # Clean missing values
+    df["rating_val"] = pd.to_numeric(
+        df["rating_val"], errors="coerce"
+    ).fillna(0)
 
+    df["review_cnt"] = pd.to_numeric(
+        df["review_cnt"], errors="coerce"
+    ).fillna(0)
+
+    df = df.fillna("")
+
+    # Convert CSV columns to our application's format
     restaurants = []
 
-    for _, row in dataframe.iterrows():
+    for _, row in df.iterrows():
         restaurants.append({
-            "id": str(row["store_id"]),
-            "name": str(row["name"]).strip(),
-            "station": str(row["nearest_station"]).strip(),
-            "distance": str(row["nearest_distance"]).strip(),
-            "genre": str(row["genre"]).strip(),
-            "rating": float(row["rating_val"] or 0),
-            "review_count": int(float(row["review_cnt"] or 0)),
-            "dinner_budget": str(row["budget_dinner"]).strip(),
-            "lunch_budget": str(row["budget_lunch"]).strip(),
-            "address": str(row["address"]).strip(),
-            "area": str(row["municipalities_1"]).strip(),
+            "name": row["name"],
+            "area": row["municipalities_1"],
+            "neighborhood": row["municipalities_2"],
+            "station": row["nearest_station"],
+            "cuisine": row["genre"],
+            "rating": float(row["rating_val"]),
+            "reviews": int(row["review_cnt"]),
+            "description": (
+                f"Rating: {row['rating_val']} | "
+                f"Reviews: {int(row['review_cnt'])} | "
+                f"Dinner: {row['budget_dinner']}"
+            )
         })
 
     return restaurants
