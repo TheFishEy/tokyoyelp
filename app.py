@@ -1,8 +1,11 @@
-
 import streamlit as st
+from data import get_restaurants
+from recommender import recommend
 
 st.title("TokyoYelp")
-st.write("Get recommended OUSHI tokyo restaruants (OUSHI!)")
+st.write("Are you unsure of what restraunts you'll like on your next weeb trip?")
+st.write("Have no fear! Get recommended OUSHI tokyo restaruants!")
+
 
 # User preferences
 area = st.selectbox(
