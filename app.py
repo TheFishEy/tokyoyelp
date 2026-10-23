@@ -1,5 +1,10 @@
 import streamlit as st
-import re
+import re ##manipulation for the
+
+# for groq api
+import os
+import json
+import requests
 
 from data import get_restaurants
 from recommender import recommend
@@ -171,6 +176,58 @@ try:
                 filtered.append(r)
 
         results = filtered
+        
+        
+        
+    ### AI INTEGRATION   
+    if results:
+        preference = st.text_input(
+            "What matters most to you?", placeholder='Try: "best value for money"  or  "rating to price ratio"'
+        )
+
+        if st.button("Ask AI to Pick"):
+            candidates = results[:20]
+
+            options = "\n".join(
+                f"{i}: {r['name']} | {r['genre']} | "
+                f"Rating: {r['rating']} | Price: {r['dinner_budget']}"
+                for i, r in enumerate(candidates)
+            )
+
+            response = requests.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {os.environ['GROQ_API_KEY']}"
+                },
+                json={
+                    "model": "openai/gpt-oss-20b",
+                    "messages": [{
+                        "role": "user",
+                        "content": (
+                            f"Choose the best restaurant for: {preference}. "
+                            "Return JSON with an integer 'index' and "
+                            "a short 'reason'. Use only these options "
+                            f"numbered from 0:\n{options}"
+                        )
+                    }],
+                    "response_format": {"type": "json_object"},
+                    "reasoning_effort": "low"
+                },
+                timeout=30
+            )
+            response.raise_for_status()
+
+            pick = json.loads(
+                response.json()["choices"][0]["message"]["content"]
+            )
+            index = int(pick["index"])
+
+            if 0 <= index < len(candidates):
+                st.success(f"AI recommends: {candidates[index]['name']}")
+                st.write(pick["reason"])
+            else:
+                st.error("AI returned an invalid restaurant.")
+
 
     if not results:
         st.info(
