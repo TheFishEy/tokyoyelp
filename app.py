@@ -1,22 +1,30 @@
 import streamlit as st
-from data import get_restaurants
-from recommender import recommend
 
-st.title("TokyoYelp")
-st.write("Are you unsure of what restraunts you'll like on your next weeb trip?")
-st.write("Have no fear! Get recommended OUSHI tokyo restaruants!")
-
-
-# User preferences
-area = st.selectbox(
-    "Where do you want to eat?",
-    ["Anywhere", "Shinjuku", "Shibuya", "Asakusa"]
+st.set_page_config(
+    page_title="Tokyo Table",
+    # page_icon="",
+    layout="wide"
 )
 
-cuisine = st.selectbox(
-    "What are you craving?",
-    ["Anything", "Ramen", "Sushi", "Yakiniku"]
+st.title("Tokyo Table")
+st.write("Find your next favorite restaurant in Tokyo.")
+
+search = st.text_input(
+    "What are you looking for?",
+    placeholder="Try: sushi near Shibuya"
 )
 
-if st.button("Find Restaurants"):
-    st.write(f"Searching for {cuisine} in {area}...")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.selectbox("Cuisine", ["Any", "Ramen", "Sushi", "Izakaya"])
+
+with col2:
+    st.selectbox("Neighborhood", ["Any", "Shibuya", "Shinjuku", "Ginza"])
+
+with col3:
+    st.selectbox("Budget", ["Any", "¥", "¥¥", "¥¥¥"])
+
+st.subheader("Recommended restaurants")
+
+st.info("Your restaurant recommendations will appear here.")
