@@ -11,6 +11,17 @@ st.set_page_config(
 )
 
 
+
+###### PAGE CONFIGS HERE-----
+
+
+
+
+
+
+
+
+
 st.title("Tokyo Table")
 st.write("Find your next favorite restaurant in Tokyo.")
 
