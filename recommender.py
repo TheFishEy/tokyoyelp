@@ -11,18 +11,16 @@ AREA_FILTERS = {
 
 CUISINE_FILTERS = {
     "Anything": [],
-    "Sushi": ["寿司", "鮨", "すし"],
-    "Ramen": ["ラーメン", "らーめん", "つけ麺"],
-    "Yakiniku": ["焼肉", "やき肉"],
-    "Izakaya": ["居酒屋"],
+    "Sushi": ["Sushi"],
+    "Ramen": ["Ramen", "Tsukemen"],
+    "Izakaya": ["Izakaya"],
+    "Yakiniku": ["Yakiniku"],
     "Japanese": [
-        "日本料理",
-        "和食",
-        "寿司",
-        "鮨",
-        "ラーメン",
-        "焼肉",
-        "居酒屋",
+        "Japanese",
+        "Sushi",
+        "Ramen",
+        "Yakiniku",
+        "Izakaya",
     ],
 }
 

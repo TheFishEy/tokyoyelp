@@ -7,7 +7,7 @@ import streamlit as st
 DATASET_PATH = (
     Path(__file__).parent
     / "data"
-    / "Tokyo_Restaurant_Reviews_Tabelog.csv"
+    / "restaurants_english_final.csv"
 )
 
 
@@ -29,17 +29,31 @@ def get_restaurants():
 
     for _, row in dataframe.iterrows():
         restaurants.append({
-            "id": str(row["store_id"]),
+            "id": str(row["restaurant_id"]),
             "name": str(row["name"]).strip(),
             "station": str(row["nearest_station"]).strip(),
-            "distance": str(row["nearest_distance"]).strip(),
-            "genre": str(row["genre"]).strip(),
-            "rating": float(row["rating_val"] or 0),
-            "review_count": int(float(row["review_cnt"] or 0)),
-            "dinner_budget": str(row["budget_dinner"]).strip(),
-            "lunch_budget": str(row["budget_lunch"]).strip(),
+            "distance": str(
+                row["distance_from_station_m"]
+            ).strip(),
+            "genre": str(row["cuisine"]).strip(),
+            "rating": float(row["rating"] or 0),
+            "review_count": int(
+                float(row["review_count"] or 0)
+            ),
+            "dinner_budget": str(
+                row["dinner_price"]
+            ).strip(),
+            "lunch_budget": str(
+                row["lunch_price"]
+            ).strip(),
             "address": str(row["address"]).strip(),
-            "area": str(row["municipalities_1"]).strip(),
+            "area": (
+                str(row["city"]).strip()
+                + " "
+                + str(row["district"]).strip()
+                + " "
+                + str(row["area"]).strip()
+            ),
         })
 
     return restaurants
