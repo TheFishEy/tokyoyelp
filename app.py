@@ -1,4 +1,5 @@
 import streamlit as st
+import re
 
 from data import get_restaurants
 from recommender import recommend
@@ -20,8 +21,8 @@ search = st.text_input(
 )
 
 
-col1, col2, col3 = st.columns(3)
 
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     cuisine = st.selectbox(
@@ -29,20 +30,25 @@ with col1:
         ["Any", "Ramen", "Sushi", "Izakaya"],
     )
 
-
+## neighborhood dropdown
 with col2:
     neighborhood = st.selectbox(
         "Neighborhood",
         ["Any", "Shibuya", "Shinjuku", "Ginza"],
     )
 
-
+## budget dopdown
 with col3:
     budget = st.selectbox(
-        "Budget",
-        ["Any", "¥", "¥¥", "¥¥¥"],
+        "Budget (¥1,000=$6)",
+        ["Any", "¥", "¥¥", "¥¥¥", "¥¥¥¥", "¥¥¥¥¥"],
     )
 
+with col4:
+    rating = st.selectbox(
+        "Tabelog Rating",
+        ["Any", "⭐ (>2.4)", "⭐⭐ (>2.7)", "⭐⭐⭐ (>3)", "⭐⭐⭐⭐ (>3.3)", "⭐⭐⭐⭐⭐ (3.5)"],
+    )
 
 st.subheader("Recommended restaurants")
 
@@ -68,6 +74,7 @@ try:
         restaurants,
         neighborhood_filter,
         cuisine_filter,
+        rating=rating,
     )
 
     # Search filter
@@ -133,43 +140,26 @@ try:
 
         results = filtered_results
 
+
     # Budget filter
     if budget != "Any":
-        budget_results = []
+        filtered = []
 
-        for restaurant in results:
-            dinner_budget = restaurant.get(
-                "dinner_budget",
-                "",
+        for r in results:
+            price = re.search(
+                r"\d[\d,]*", str(r["dinner_budget"])
             )
 
-            if budget == "¥":
-                matches_budget = (
-                    "999" in dinner_budget
-                    or "1,999" in dinner_budget
-                )
+            if not price:
+                continue
 
-            elif budget == "¥¥":
-                matches_budget = (
-                    "2,000" in dinner_budget
-                    or "2,999" in dinner_budget
-                    or "3,000" in dinner_budget
-                    or "3,999" in dinner_budget
-                )
+            yen = int(price.group().replace(",", ""))
+            tier = min(yen // 3000 + 1, 5) # never excede 5
 
-            else:
-                matches_budget = (
-                    "4,000" in dinner_budget
-                    or "4,999" in dinner_budget
-                    or "5,000" in dinner_budget
-                    or "5,999" in dinner_budget
-                    or "6,000" in dinner_budget
-                )
+            if budget == "¥" * tier:
+                filtered.append(r)
 
-            if matches_budget:
-                budget_results.append(restaurant)
-
-        results = budget_results
+        results = filtered
 
     if not results:
         st.info(

@@ -27,7 +27,17 @@ CUISINE_FILTERS = {
 }
 
 
-def recommend(restaurants, area, cuisine):
+## tabelog ratings
+RATING_MAP = {
+    "⭐": 2.4,
+    "⭐⭐": 2.7,
+    "⭐⭐⭐": 3.0,
+    "⭐⭐⭐⭐": 3.3,
+    "⭐⭐⭐⭐⭐": 3.5
+}
+
+
+def recommend(restaurants, area, cuisine, rating="Any"):
     results = restaurants
 
     area_keyword = AREA_FILTERS.get(area, "")
@@ -50,7 +60,17 @@ def recommend(restaurants, area, cuisine):
                 for keyword in cuisine_keywords
             )
         ]
+    # Filter by minimum Tabelog rating
+    min_rating = RATING_MAP.get("⭐" * rating.count("⭐"), 0)
 
+
+    # Returnig ratings
+    results = [
+        restaurant
+        for restaurant in results
+        if restaurant.get("rating", 0) >= min_rating
+    ]
+    
     return sorted(
         results,
         key=lambda restaurant: restaurant.get("rating", 0),
