@@ -1,10 +1,10 @@
 import streamlit as st
 import re ##manipulation for the
 
-# for groq api
-import os
-import json
-import requests
+## for groq api
+import os # reads API key from enviroment
+import json # converts JSON into python objs
+import requests # sends http to groq, communication for api
 
 from data import get_restaurants
 from recommender import recommend
@@ -63,7 +63,7 @@ with col3:
 with col4:
     rating = st.selectbox(
         "Tabelog Rating",
-        ["Any", "⭐ (>2.4)", "⭐⭐ (>2.7)", "⭐⭐⭐ (>3)", "⭐⭐⭐⭐ (>3.3)", "⭐⭐⭐⭐⭐ (3.5)"],
+        ["Any", "⭐ ()>2.4)", "⭐⭐ (>2.7)", "⭐⭐⭐ (>3)", "⭐⭐⭐⭐ (>3.3)", "⭐⭐⭐⭐⭐ (>3.5)"],
     )
 
 st.subheader("Recommended restaurants")
@@ -119,6 +119,8 @@ try:
         ]
 
         filtered_results = []
+        
+        #fitering
 
         for restaurant in results:
             searchable_text = (
@@ -180,20 +182,25 @@ try:
         
         
     ### AI INTEGRATION   
+    # Groq - open-models
     if results:
         preference = st.text_input(
             "What matters most to you?", placeholder='Try: "best value for money"  or  "rating to price ratio"'
         )
 
         if st.button("Ask AI to Pick"):
-            candidates = results[:20]
+            candidates = results[:20] # lists our dict, first 20 entries seen by 
 
+            # convert to strings like below:
+            #0: Restaurant A | 寿司 | Rating: 3.8 | Price: ￥3,000～￥3,999
+            #1: Restaurant B | ラーメン | Rating: 3.5 | Price: ￥1,000～￥1,999
             options = "\n".join(
                 f"{i}: {r['name']} | {r['genre']} | "
                 f"Rating: {r['rating']} | Price: {r['dinner_budget']}"
                 for i, r in enumerate(candidates)
             )
 
+            # API, sending data to groq
             response = requests.post(
                 "https://api.groq.com/openai/v1/chat/completions",
                 headers={
@@ -244,33 +251,33 @@ try:
                 st.subheader(restaurant["name"])
 
                 st.write(
-                    f"📍 **Address:** "
+                    f"**Address:** "
                     f"{restaurant['address']}"
                 )
 
                 st.write(
-                    f"🚉 **Nearest station:** "
+                    f"**Nearest station:** "
                     f"{restaurant['station']} "
                     f"({restaurant['distance']} meters)"
                 )
 
                 st.write(
-                    f"🍱 **Genre:** "
+                    f"**Genre:** "
                     f"{restaurant['genre']}"
                 )
 
                 st.write(
-                    f"⭐ **Rating:** "
+                    f"**Rating:** "
                     f"{restaurant['rating']}"
                 )
 
                 st.write(
-                    f"📝 **Reviews:** "
+                    f"**Reviews:** "
                     f"{restaurant['review_count']}"
                 )
 
                 st.write(
-                    f"💴 **Dinner budget:** "
+                    f"**Dinner budget:** "
                     f"{restaurant['dinner_budget']}"
                 )
 
