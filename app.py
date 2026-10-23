@@ -17,18 +17,8 @@ st.set_page_config(
 
 
 
-###### PAGE CONFIGS HERE-----
-
-
-
-
-
-
-
-
-
 st.title("Tokyo Table")
-st.write("Find your next favorite restaurant in Tokyo.")
+st.write("Find your next favorite restaurant in Tokyo! Search From our list of 118,915 restaurants.")
 
 
 search = st.text_input(
