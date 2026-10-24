@@ -35,5 +35,5 @@ AI tools were used to assist with generating and developing portions of the code
 1. Clone the repository:
 
 ```bash
-git clone [repository URL]
-cd [project folder]
+git clone https://github.com/TheFishEy/tokyoyelp.git
+cd tokyoyelp
