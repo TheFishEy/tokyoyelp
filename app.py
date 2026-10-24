@@ -1,24 +1,105 @@
+import base64
+from pathlib import Path
 import streamlit as st
+<<<<<<< Updated upstream
 import re ##manipulation for the
 
 ## for groq api
 import os # reads API key from enviroment
 import json # converts JSON into python objs
 import requests # sends http to groq, communication for api
+=======
+import re
+import os
+import json
+import requests
+>>>>>>> Stashed changes
 
 from data import get_restaurants
 from recommender import recommend
 
 
 st.set_page_config(
-    page_title="Tokyo Table",
+    page_title="Welcome to Tokyo Yelp",
     layout="wide",
 )
 
 
+image_path = (
+    Path(__file__).parent
+    / "images"
+    / "pexels-cristiano-sinisterra-3279598-5197132.jpg"
+)
 
+<<<<<<< Updated upstream
 st.title("Tokyo Table")
 st.write("Find your next favorite restaurant in Tokyo")
+=======
+image_data = base64.b64encode(
+    image_path.read_bytes()
+).decode()
+
+
+st.markdown(
+    f"""
+    <style>
+    .hero {{
+        height: 220px;
+        border-radius: 12px;
+        background-image:
+            linear-gradient(
+                rgba(0, 0, 0, 0.25),
+                rgba(0, 0, 0, 0.25)
+            ),
+            url("data:image/jpeg;base64,{image_data}");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+    }}
+    </style>
+
+    <div class="hero">
+        <h2>Find your next favorite restaurant in Tokyo...</h2>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+## get rid of header
+st.markdown("""
+<style>
+[data-testid="stHeader"] {
+    display: none;
+}
+
+[data-testid="stToolbar"] {
+    display: none;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+st.set_page_config(
+    page_title="Welcome to Tokyo Yelp",
+    layout="wide",
+)
+
+left, center, right = st.columns([1, 3, 1])
+
+with center:
+    st.image("images/logo_fixed.png", width="stretch")
+
+##st.markdown(
+##    "<h1 style='text-align: center;'>Tokyo Yelp</h1>",
+##    unsafe_allow_html=True,
+##) 
+
+>>>>>>> Stashed changes
 
 
 search = st.text_input(
