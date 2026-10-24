@@ -217,7 +217,7 @@ with col3:
 
 
 st.divider()
-st.subheader("Recommended restaurants")
+
 
 
 try:
@@ -518,75 +518,35 @@ try:
                             )
 
                         # All cuisine sections line up.
-                        with st.container(
-                            height=cuisine_height
-                        ):
-                            st.write(
-                                f"🍱 **Cuisine:** "
-                                f"{restaurant.get(
-                                    'genre',
-                                    '',
-                                )}"
-                            )
+                        with st.container(height=cuisine_height):
+                            st.write(f"**Cuisine:** {restaurant.get('genre', '')}")
 
                         st.divider()
 
                         st.write(
-                            f"⭐ **Rating:** "
-                            f"{float(
-                                restaurant.get(
-                                    'rating',
-                                    0,
-                                )
-                            ):.2f}"
+                            f"**Rating:** {float(restaurant.get('rating') or 0):.2f}"
                         )
 
                         st.write(
-                            f"📝 **Reviews:** "
-                            f"{int(
-                                restaurant.get(
-                                    'review_count',
-                                    0,
-                                )
-                            )}"
+                            f"**Reviews:** {int(restaurant.get('review_count') or 0)}"
                         )
 
                         # All station sections line up.
-                        with st.container(
-                            height=station_height
-                        ):
+                        with st.container(height=station_height):
+                            distance = float(restaurant.get('distance') or 0)
                             st.write(
-                                f"🚉 **Station:** "
-                                f"{restaurant.get(
-                                    'station',
-                                    '',
-                                )} "
-                                f"({float(
-                                    restaurant.get(
-                                        'distance',
-                                        0,
-                                    )
-                                ):.0f} m)"
+                                f"**Station:** {restaurant.get('station', '')} "
+                                f"({distance:.0f} m)"
                             )
 
                         st.write(
-                            f"💴 **Dinner:** "
-                            f"{restaurant.get(
-                                'dinner_budget',
-                                '',
-                            )}"
+                            f"**Dinner:** {restaurant.get('dinner_budget', '')}"
                         )
 
                         # All address sections line up.
-                        with st.container(
-                            height=address_height
-                        ):
+                        with st.container(height=address_height):
                             st.write(
-                                f"📍 **Address:** "
-                                f"{restaurant.get(
-                                    'address',
-                                    '',
-                                )}"
+                                f"**Address:** {restaurant.get('address', '')}"
                             )
 
         # Add the line only after a complete page
