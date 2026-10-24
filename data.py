@@ -21,39 +21,75 @@ def get_restaurants():
     dataframe = pd.read_csv(
         DATASET_PATH,
         encoding="utf-8-sig",
-    )
-
-    dataframe = dataframe.fillna("")
+    ).fillna("")
 
     restaurants = []
 
     for _, row in dataframe.iterrows():
-        restaurants.append({
-            "id": str(row["restaurant_id"]),
-            "name": str(row["name"]).strip(),
-            "station": str(row["nearest_station"]).strip(),
-            "distance": str(
-                row["distance_from_station_m"]
-            ).strip(),
-            "genre": str(row["cuisine"]).strip(),
-            "rating": float(row["rating"] or 0),
-            "review_count": int(
-                float(row["review_count"] or 0)
-            ),
-            "dinner_budget": str(
-                row["dinner_price"]
-            ).strip(),
-            "lunch_budget": str(
-                row["lunch_price"]
-            ).strip(),
-            "address": str(row["address"]).strip(),
-            "area": (
-                str(row["city"]).strip()
-                + " "
-                + str(row["district"]).strip()
-                + " "
-                + str(row["area"]).strip()
-            ),
-        })
+        restaurants.append(
+            {
+                "id": str(
+                    row["restaurant_id"]
+                ).strip(),
+
+                "name": str(
+                    row["name"]
+                ).strip(),
+
+                "station": str(
+                    row["nearest_station"]
+                ).strip(),
+
+                "distance": to_float(
+                    row["distance_from_station_m"]
+                ),
+
+                "genre": str(
+                    row["cuisine"]
+                ).strip(),
+
+                "rating": to_float(
+                    row["rating"]
+                ),
+
+                "review_count": to_int(
+                    row["review_count"]
+                ),
+
+                "dinner_budget": str(
+                    row["dinner_price"]
+                ).strip(),
+
+                "lunch_budget": str(
+                    row["lunch_price"]
+                ).strip(),
+
+                "address": str(
+                    row["address"]
+                ).strip(),
+
+                "area": (
+                    str(row["city"]).strip()
+                    + " "
+                    + str(row["district"]).strip()
+                    + " "
+                    + str(row["area"]).strip()
+                ),
+            }
+        )
 
     return restaurants
+
+
+def to_float(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def to_int(value):
+    try:
+        return int(float(value))
+    except (TypeError, ValueError):
+        return 0
