@@ -53,9 +53,9 @@ The application supports the following cuisine categories:
 - Streamlit
 - Pandas
 - Requests
+- Groq API
 - Kaggle
 - ChatGPT
-- Claude
 
 ## Dataset Credit
 
@@ -399,6 +399,6 @@ pexels-cristiano-sinisterra-3279598-5197132.jpg
 
 ## AI Usage
 
-AI tools, including ChatGPT and Claude, were used to assist with generating and developing portions of the code.
+AI tools, including ChatGPT and Groq, were used to assist with generating and developing portions of the code.
 
 The team reviewed, tested, corrected, and refined the AI-assisted code to ensure that it worked properly and met the project's requirements.
