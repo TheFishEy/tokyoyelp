@@ -23,6 +23,7 @@ Tabelog is a Japanese-style Yelp, which Japanese citizens mainly use for food an
 - Python
 - Streamlit
 - Kaggle
+- Groq
 - ChatGPT
 - Claude
 
