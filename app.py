@@ -1,19 +1,12 @@
 import base64
 from pathlib import Path
 import streamlit as st
-<<<<<<< Updated upstream
-import re ##manipulation for the
 
-## for groq api
-import os # reads API key from enviroment
-import json # converts JSON into python objs
-import requests # sends http to groq, communication for api
-=======
 import re
 import os
 import json
 import requests
->>>>>>> Stashed changes
+
 
 from data import get_restaurants
 from recommender import recommend
@@ -31,10 +24,6 @@ image_path = (
     / "pexels-cristiano-sinisterra-3279598-5197132.jpg"
 )
 
-<<<<<<< Updated upstream
-st.title("Tokyo Table")
-st.write("Find your next favorite restaurant in Tokyo")
-=======
 image_data = base64.b64encode(
     image_path.read_bytes()
 ).decode()
@@ -98,8 +87,6 @@ with center:
 ##    "<h1 style='text-align: center;'>Tokyo Yelp</h1>",
 ##    unsafe_allow_html=True,
 ##) 
-
->>>>>>> Stashed changes
 
 
 search = st.text_input(
@@ -191,7 +178,7 @@ try:
 
         filtered_results = []
         
-        #fitering
+        #fitering 
 
         for restaurant in results:
             searchable_text = (
