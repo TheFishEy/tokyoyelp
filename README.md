@@ -309,11 +309,11 @@ Best value for money
 ```
 
 ```text
-Highest rating
+Near tokyo station
 ```
 
 ```text
-Cheapest dinner
+Something trendy and fast
 ```
 
 The AI will select a restaurant from the filtered results and provide a short explanation.
@@ -399,6 +399,6 @@ pexels-cristiano-sinisterra-3279598-5197132.jpg
 
 ## AI Usage
 
-AI tools, including ChatGPT and Groq, were used to assist with generating and developing portions of the code.
+AI tools, including ChatGPT, were used to assist with generating and developing portions of the code.
 
 The team reviewed, tested, corrected, and refined the AI-assisted code to ensure that it worked properly and met the project's requirements.
